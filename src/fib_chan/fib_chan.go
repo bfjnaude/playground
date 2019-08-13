@@ -13,16 +13,22 @@ func fib(n int) int {
 		return n
 	}
 
-	return fib(n-1) + fib(n-2)
+	fibPrev := 1
+	fib := 1
+
+	for i := 2; i < n; i++ {
+		tmp := fib
+		fib = fib + fibPrev
+		fibPrev = tmp
+	}
+
+	return fib
 }
 
 func main() {
 	jobs := make(chan int, 100)
 	results := make(chan int, 100)
 
-	go worker(jobs, results)
-	go worker(jobs, results)
-	go worker(jobs, results)
 	go worker(jobs, results)
 
 	for i := 0; i < 100; i++ {
